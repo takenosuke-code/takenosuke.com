@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects, type Project } from "../../data/projects";
 import { ProjectCard } from "../projects/ProjectCard";
 import { ProjectModal } from "../projects/ProjectModal";
