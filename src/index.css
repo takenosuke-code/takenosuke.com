@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
-/* Design System - Clean Dark Theme */
+/* Design System — Clean Dark, Cream Accent */
 @theme {
-  --color-background: #0a0a0a;
-  --color-background-secondary: #141414;
-  --color-card: #1a1a1a;
-  --color-border: #2a2a2a;
-  --color-foreground: #ffffff;
-  --color-foreground-muted: #888888;
-  --color-accent: #3b82f6;
+  --color-background: #09090b;
+  --color-surface: #131316;
+  --color-card: #18181b;
+  --color-card-hover: #1f1f23;
+  --color-border: #27272a;
+  --color-border-hover: #3f3f46;
+  --color-foreground: #fafafa;
+  --color-foreground-muted: #a1a1aa;
+  --color-foreground-dim: #52525b;
+  --color-accent: #E8D5B5;
+  --color-accent-hover: #F0E0C4;
+  --color-accent-text: #09090b;
 
-  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
 }
 
 * {
@@ -26,27 +31,14 @@ body {
   font-family: var(--font-sans);
   background-color: var(--color-background);
   color: var(--color-foreground);
-  line-height: 1.5;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 ::selection {
   background-color: var(--color-accent);
-  color: white;
-}
-
-/* Typing cursor */
-.typing-cursor {
-  display: inline-block;
-  width: 3px;
-  height: 1.1em;
-  background-color: var(--color-accent);
-  margin-left: 2px;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  50% { opacity: 0; }
+  color: var(--color-accent-text);
 }
 
 /* Lenis */
@@ -60,4 +52,19 @@ html.lenis, html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+/* Scroll indicator */
+@keyframes gentleBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+.bounce-gentle {
+  animation: gentleBounce 2s ease-in-out infinite;
+}
+
+/* Word reveal clip */
+.word-reveal {
+  clip-path: inset(0 0 100% 0);
 }

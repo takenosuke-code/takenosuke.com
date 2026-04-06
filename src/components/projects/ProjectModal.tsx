@@ -15,11 +15,17 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.2 });
-    gsap.fromTo(modalRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.3, delay: 0.05 });
+    gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.25 });
+    gsap.fromTo(
+      modalRef.current,
+      { opacity: 0, y: 40, scale: 0.95 },
+      { opacity: 1, y: 0, scale: 1, duration: 0.4, delay: 0.05, ease: "power3.out" }
+    );
 
     document.body.style.overflow = "hidden";
-    const handleEsc = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
     window.addEventListener("keydown", handleEsc);
 
     return () => {
@@ -30,34 +36,38 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
   useEffect(() => {
     if (allImages.length <= 1) return;
-
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % allImages.length);
     }, 3000);
-
     return () => clearInterval(interval);
   }, [allImages.length]);
 
   const handleClose = () => {
-    gsap.to(overlayRef.current, { opacity: 0, duration: 0.15 });
-    gsap.to(modalRef.current, { opacity: 0, y: 10, duration: 0.15, onComplete: onClose });
+    gsap.to(overlayRef.current, { opacity: 0, duration: 0.2 });
+    gsap.to(modalRef.current, {
+      opacity: 0,
+      y: 20,
+      scale: 0.97,
+      duration: 0.2,
+      onComplete: onClose,
+    });
   };
 
   return (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm overflow-y-auto"
       onClick={handleClose}
       data-lenis-prevent
     >
       <div
         ref={modalRef}
-        className="relative w-full max-w-2xl my-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl"
+        className="relative w-full max-w-2xl my-8 bg-[var(--color-card)] border border-[var(--color-border)] rounded-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
-        style={{ overscrollBehavior: 'contain' }}
+        style={{ overscrollBehavior: "contain" }}
       >
         {/* Image Carousel */}
-        <div className="relative aspect-video overflow-hidden rounded-t-2xl bg-black">
+        <div className="relative aspect-video overflow-hidden bg-black">
           {allImages.map((img, i) => (
             <img
               key={i}
@@ -69,13 +79,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
             />
           ))}
           {allImages.length > 1 && (
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
               {allImages.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setCurrentIndex(i)}
-                  className={`w-2 h-2 rounded-full transition-colors ${
-                    i === currentIndex ? "bg-white" : "bg-white/40"
+                  className={`h-1.5 rounded-full transition-all duration-300 ${
+                    i === currentIndex
+                      ? "bg-[var(--color-accent)] w-5"
+                      : "bg-white/30 w-1.5"
                   }`}
                 />
               ))}
@@ -87,20 +99,38 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Header */}
           <div className="flex items-start justify-between mb-4">
             <div>
-              <p className="text-xs text-[var(--color-foreground-muted)] mb-1">{project.company}</p>
-              <h2 className="text-xl font-semibold text-[var(--color-foreground)]">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-accent)] mb-1">
+                {project.company}
+              </p>
+              <h2 className="text-xl font-bold text-[var(--color-foreground)]">
                 {project.title}
               </h2>
             </div>
             <button
               onClick={handleClose}
-              className="p-1.5 rounded-full hover:bg-[var(--color-background-secondary)] transition-colors"
+              className="p-1.5 rounded-lg hover:bg-[var(--color-surface)] transition-colors text-[var(--color-foreground-muted)] hover:text-[var(--color-foreground)]"
             >
-              <svg className="w-5 h-5 text-[var(--color-foreground-muted)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
+
+          {/* Highlights */}
+          {project.highlights.length > 0 && (
+            <div className="flex flex-wrap gap-4 mb-5 pb-5 border-b border-[var(--color-border)]">
+              {project.highlights.map((h) => (
+                <div key={h.label}>
+                  <span className="text-xl font-bold text-[var(--color-accent)]">
+                    {h.metric}
+                  </span>
+                  <span className="text-xs text-[var(--color-foreground-muted)] ml-1.5">
+                    {h.label}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* Description */}
           <p className="text-sm text-[var(--color-foreground-muted)] leading-relaxed whitespace-pre-line mb-5">
@@ -109,12 +139,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
 
           {/* Tech Stack */}
           <div className="mb-5">
-            <p className="text-xs font-medium text-[var(--color-foreground-muted)] uppercase tracking-wide mb-2">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-accent)] mb-3">
               Tech Stack
             </p>
-            <div className="flex flex-wrap gap-1.5">
+            <div className="flex flex-wrap gap-2">
               {project.technologies.map((tech) => (
-                <span key={tech} className="px-2.5 py-1 text-xs bg-[var(--color-background-secondary)] text-[var(--color-foreground)] rounded-full">
+                <span
+                  key={tech}
+                  className="px-3 py-1 text-xs font-medium bg-[var(--color-surface)] text-[var(--color-foreground)] rounded-full"
+                >
                   {tech}
                 </span>
               ))}
@@ -124,12 +157,15 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
           {/* Skills */}
           {project.softSkills.length > 0 && (
             <div className="mb-6">
-              <p className="text-xs font-medium text-[var(--color-foreground-muted)] uppercase tracking-wide mb-2">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-accent)] mb-3">
                 Skills
               </p>
-              <div className="flex flex-wrap gap-1.5">
+              <div className="flex flex-wrap gap-2">
                 {project.softSkills.map((skill) => (
-                  <span key={skill} className="px-2.5 py-1 text-xs border border-[var(--color-border)] text-[var(--color-foreground-muted)] rounded-full">
+                  <span
+                    key={skill}
+                    className="px-3 py-1 text-xs border border-[var(--color-border)] text-[var(--color-foreground-muted)] rounded-full"
+                  >
                     {skill}
                   </span>
                 ))}
@@ -143,11 +179,11 @@ export function ProjectModal({ project, onClose }: ProjectModalProps) {
               href={project.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--color-accent)] text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-accent)] text-[var(--color-accent-text)] text-sm font-semibold rounded-full hover:bg-[var(--color-accent-hover)] transition-colors"
             >
               Visit Website
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
               </svg>
             </a>
           )}

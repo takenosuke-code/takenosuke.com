@@ -165,6 +165,22 @@ export interface Experience {
 
 export const experiences: Experience[] = [
   {
+    slug: "meta-lexical",
+    company: "Meta",
+    role: "Open Source Contributor",
+    location: "Remote",
+    description: "Contributed to Lexical, Meta's extensible text editor framework.",
+    longDescription: `Contributed to Lexical, Meta's open-source extensible text editor framework used across Meta products.
+
+Key contributions:
+• Contributed to the Lexical text editor framework
+• Worked within Meta's open-source ecosystem and contribution guidelines`,
+    technologies: ["JavaScript", "TypeScript", "React", "Lexical"],
+    links: [
+      { label: "Lexical", url: "https://github.com/facebook/lexical" },
+    ],
+  },
+  {
     slug: "nortiq-labs",
     company: "Nortiq Labs",
     role: "Co-Founder / CTO",
