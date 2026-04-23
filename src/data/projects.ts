@@ -1,10 +1,14 @@
+export type ProjectCategory = "ai-ml" | "fullstack";
+
 export interface Project {
   slug: string;
   title: string;
   company: string;
+  category: ProjectCategory;
   description: string;
   longDescription: string;
   url?: string;
+  github?: string;
   image: string;
   gallery?: string[];
   technologies: string[];
@@ -17,9 +21,104 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "vetonet",
+    title: "VetoNet",
+    company: "Founder / Engineer",
+    category: "ai-ml",
+    description:
+      "Semantic firewall that prevents prompt injection attacks on AI agent transactions with a 98.87% block rate.",
+    longDescription: `VetoNet is a security layer for AI agents that make real-world transactions. When an AI agent tries to spend money, book a service, or execute an action on behalf of a user, VetoNet intercepts the call and decides whether to approve or block it — in milliseconds, before the damage is done.
+
+The core problem — intent drift:
+AI agents can be manipulated by prompt injection so that what they execute drifts away from what the user originally asked for. A "$50 Amazon gift card" becomes "$50 of AWS Credits." A "$50 rental" becomes a "$50,000 yacht charter." The agent itself can't be trusted to report what it's doing — it's already been fooled.
+
+VetoNet compares the user's original stated intent against the real tool call parameters hitting the API — not what the agent claims it's doing.
+
+3-Layer defense engine:
+• Deterministic rule checks — 10 hard rules (known bad vendors, category mismatches, price floors, obfuscated text, Cyrillic lookalikes, zero-width characters)
+• ML classifier — Sentence Transformer + RandomForest trained on 4,400+ labeled real-world attacks
+• LLM semantic layer — final judgment on subtle, context-dependent cases
+
+Shipped:
+• Open-source Python package (pip install vetonet) with LangChain @protected_tool decorator
+• Live product with API key auth, rate limiting, React playground
+• Flask API + Supabase auth + Groq LLM integration, deployed on Railway
+• Tested against 3,820+ attack scenarios — 98.87% block rate, 24 real bypasses found and documented`,
+    url: "https://veto-net.org",
+    github: "https://github.com/takenosuke-code/vetonet",
+    image: "/img/vetonetLP.png",
+    technologies: [
+      "Python",
+      "Flask",
+      "LangChain",
+      "Sentence Transformers",
+      "scikit-learn",
+      "Groq",
+      "Supabase",
+      "React",
+      "Railway",
+    ],
+    softSkills: ["AI Security", "ML Engineering", "Product Strategy"],
+    highlights: [
+      { metric: "98.87%", label: "Block Rate" },
+      { metric: "3,820+", label: "Attacks Tested" },
+      { metric: "4,400+", label: "Training Examples" },
+    ],
+  },
+  {
+    slug: "tennis-iq",
+    title: "TennisIQ",
+    company: "Founding Engineer",
+    category: "ai-ml",
+    description:
+      "AI tennis swing analyzer with pose tracking, a custom-trained swing classifier, and Claude-powered coaching feedback.",
+    longDescription: `TennisIQ helps players sharpen their technique by analyzing swing video frame-by-frame, comparing it against their own best swing, and giving AI coaching feedback on what changed.
+
+Pose tracking & visualization:
+• MediaPipe-powered detection of 33 body landmarks per frame (shoulders, elbows, wrists, knees)
+• Real-time swing-path visualization of the racket-hand motion as a smooth curve
+• Joint group filters to focus analysis on a specific part of the body
+• Synchronized side-by-side playback at variable speeds for baseline vs. current
+
+Custom-trained classifier:
+• Built and trained a swing classifier on labeled tennis-swing data
+• Identifies swing type and surfaces technique deviations the LLM can then explain
+• Pre-processed pose-landmark sequences into model-ready features and tuned for low-latency inference in the browser/server pipeline
+
+AI coaching layer:
+• Claude analyzes joint-angle deltas between current swing and saved baseline
+• Returns concrete, plain-English feedback on what improved and what regressed
+
+Stack & infra:
+• React frontend deployed on Vercel
+• Vercel Blob for swing-video storage and retrieval
+• Python services on Railway for pose processing and classifier inference
+• MediaPipe (pose detection) + Claude API (coaching feedback)`,
+    url: "https://tennisiq-sigma.vercel.app",
+    image: "/img/tennisiq_LP.png",
+    technologies: [
+      "React",
+      "TypeScript",
+      "Python",
+      "MediaPipe",
+      "scikit-learn",
+      "Claude API",
+      "Vercel",
+      "Vercel Blob",
+      "Railway",
+    ],
+    softSkills: ["AI/ML", "Computer Vision", "Founding Engineer"],
+    highlights: [
+      { metric: "33", label: "Body Landmarks" },
+      { metric: "Trained", label: "Swing Classifier" },
+      { metric: "Claude", label: "Coaching" },
+    ],
+  },
+  {
     slug: "cocopa",
     title: "Cocopa Resort Club",
     company: "Project Manager / Developer",
+    category: "fullstack",
     description:
       "Led a team of 3 to rebuild a Golf resort's website with performance improvements.",
     longDescription: `As Project Manager, I led a team of 3 engineers and designers to completely rebuild the Cocopa Resort Club website.
@@ -48,6 +147,7 @@ Results:
     slug: "taketora-antique",
     title: "Taketora Antique",
     company: "Developer",
+    category: "fullstack",
     description:
       "Built a fullstack modern e-commerce store with WordPress as a headless CMS for non-technical clients.",
     longDescription: `Developed a full e-commerce solution for an anime/antique store using WordPress as a headless CMS.
@@ -74,6 +174,7 @@ Results:
     slug: "mineka-japan",
     title: "Mineka Japan",
     company: "Project Manager",
+    category: "fullstack",
     description:
       "Managed a cross-functional team to deliver an e-commerce platform for international clients.",
     longDescription: `Led product management for an e-commerce platform serving international markets.
@@ -96,6 +197,7 @@ Key achievements:
     slug: "senpai-career",
     title: "Senpai Career",
     company: "Project Manager",
+    category: "fullstack",
     description:
       "Career platform connecting students with mentors and opportunities in tech.",
     longDescription: `Led product development for Senpai Career, a platform to help students navigate tech careers.
@@ -116,6 +218,7 @@ Key achievements:
     slug: "pleast",
     title: "PLEAST",
     company: "Product Design",
+    category: "fullstack",
     description: "UI/UX design for a real estate platform.",
     longDescription: `Designed the user interface for PLEAST, a real estate platform.
 
@@ -135,6 +238,7 @@ Key achievements:
     slug: "ai-plaza",
     title: "AI Plaza",
     company: "Developer",
+    category: "fullstack",
     description: "AI discovery platform with affiliate marketing.",
     longDescription: `Developed AI Plaza, a platform for discovering and comparing AI tools and services.
 
@@ -231,12 +335,12 @@ Project: OpenStreetMap (OSM) Tagger
     links: [],
   },
   {
-    slug: "edwards-lifesciences",
-    company: "Edwards Lifesciences",
-    role: "Product Management Intern",
+    slug: "claoc",
+    company: "CLAOC",
+    role: "Intern",
     location: "Irvine, CA",
     description: "Designed healthcare solutions for underserved communities affected by cardiovascular disease.",
-    longDescription: `Interned at Edwards Lifesciences, a global leader in medical innovations for structural heart disease.
+    longDescription: `Interned at CLAOC, working on accessible healthcare solutions for underserved communities affected by cardiovascular disease.
 
 Key achievements:
 • Designed a campaign to provide accessible healthcare solutions to underserved communities

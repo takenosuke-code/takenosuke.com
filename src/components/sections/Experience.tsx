@@ -57,12 +57,23 @@ export function Experience() {
       );
       document.body.style.overflow = "hidden";
 
+      const overlay = overlayRef.current;
+      const handleWheel = (e: WheelEvent) => {
+        e.stopPropagation();
+        if (overlay) {
+          overlay.scrollTop += e.deltaY;
+          e.preventDefault();
+        }
+      };
+      overlay?.addEventListener("wheel", handleWheel, { passive: false });
+
       const handleEsc = (e: KeyboardEvent) => {
         if (e.key === "Escape") handleClose();
       };
       window.addEventListener("keydown", handleEsc);
       return () => {
         document.body.style.overflow = "";
+        overlay?.removeEventListener("wheel", handleWheel);
         window.removeEventListener("keydown", handleEsc);
       };
     }
@@ -97,7 +108,7 @@ export function Experience() {
               <div
                 key={exp.slug}
                 onClick={() => setSelectedExp(exp)}
-                className="exp-card group cursor-pointer opacity-0 rounded-xl border border-[var(--color-border)] p-5 md:p-6 transition-all duration-300 hover:bg-[var(--color-card-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-0.5"
+                className="exp-card group cursor-pointer rounded-xl border border-[var(--color-border)] p-5 md:p-6 transition-all duration-300 hover:bg-[var(--color-card-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-0.5"
               >
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                   <div className="flex-1 min-w-0">

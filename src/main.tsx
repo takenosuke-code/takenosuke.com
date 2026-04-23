@@ -6,6 +6,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./index.css";
 import App from "./App";
 
+declare global {
+  interface Window {
+    lenis?: Lenis;
+  }
+}
+
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
@@ -22,6 +28,7 @@ function Root() {
     });
 
     lenisRef.current = lenis;
+    window.lenis = lenis;
 
     // Connect Lenis to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -35,6 +42,7 @@ function Root() {
     return () => {
       lenis.destroy();
       gsap.ticker.remove(lenis.raf);
+      delete window.lenis;
     };
   }, []);
 

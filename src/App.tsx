@@ -12,8 +12,8 @@ function App() {
     <div className="min-h-screen bg-[var(--color-background)] relative">
       <Nav />
       <Hero />
-      <Experience />
       <Projects />
+      <Experience />
       <Skills />
       <Contact />
       <Footer />

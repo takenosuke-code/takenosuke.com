@@ -10,7 +10,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
   return (
     <div
       onClick={onClick}
-      className="project-card group cursor-pointer rounded-xl border border-[var(--color-border)] overflow-hidden transition-all duration-300 hover:border-[var(--color-border-hover)] hover:-translate-y-1 bg-[var(--color-card)] opacity-0"
+      className="project-card group cursor-pointer rounded-xl border border-[var(--color-border)] overflow-hidden transition-all duration-300 hover:border-[var(--color-border-hover)] hover:-translate-y-1 bg-[var(--color-card)]"
     >
       {/* Image */}
       <div className="relative aspect-video overflow-hidden bg-[var(--color-surface)]">
